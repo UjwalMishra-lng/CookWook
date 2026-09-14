@@ -3,20 +3,20 @@ import { moderateScale, scale, } from "react-native-size-matters";
 // COLOR PALETTE
 export const colors = {
   // Brand
-  primary: "#FF6B35",       // warm orange — the main action color
-  primaryLight: "#FF8C5A",  // lighter shade for hover/pressed states
+  primary: "#FF6B35",       // vibrant culinary flame orange
+  primaryLight: "#FF8C5A",  // warm apricot for hover/pressed states
 
-  // Backgrounds
-  background: "#0F0F0F",    // near-black page background
-  surface: "#1C1C1E",       // card / input surfaces (slightly lighter)
-  surfaceAlt: "#2C2C2E",    // secondary surface (dividers, tags)
+  // Backgrounds — warm espresso & baked terracotta
+  background: "#16110E",    // deep warm roasted espresso cocoa base
+  surface: "#241A13",       // warm baked terracotta surface (cards & inputs)
+  surfaceAlt: "#36261C",    // warm toasted chestnut (dividers, tags, borders)
 
-  // Text
-  textPrimary: "#F5F5F5",   // headings and body text
-  textSecondary: "#9A9A9A", // hints, labels, placeholders
+  // Text — warm cream & toasted almond
+  textPrimary: "#FFF8F4",   // delectable warm cream white
+  textSecondary: "#B8A295", // soft toasted almond cream
 
   // Borders
-  border: "#3A3A3C",        // subtle input borders
+  border: "#3D2A1E",        // warm roasted spice borders
 
   // Feedback
   error: "#FF453A",         // validation errors

@@ -10,7 +10,7 @@ import { useOnboardingStore } from "@/features/onboarding/store";
 import { spacing } from "@/theme";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 
 // FormErrors mirrors the form fields — each key holds an error string or undefined
 type FormErrors = Partial<Record<keyof SignupFormValues, string>>;
@@ -71,71 +71,82 @@ export default function SignupScreen() {
 
   return (
     <Screen>
-      <ScrollView
-        contentContainerStyle={{ padding: spacing.lg, flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
       >
-        {/* Header */}
-        <View className="mb-10 mt-6">
-          <AppText variant="hero">Cook Wook</AppText>
-          <AppText variant="hint" className="mt-2">
-            Create your account to get started
-          </AppText>
-        </View>
+        <ScrollView
+          contentContainerStyle={{
+            paddingHorizontal: spacing.lg,
+            paddingTop: spacing.md,
+            paddingBottom: spacing.xxl,
+            flexGrow: 1,
+          }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <View className="mb-8 mt-4">
+            <AppText variant="hero">Cook Wook</AppText>
+            <AppText variant="hint" className="mt-2">
+              Create your account to get started
+            </AppText>
+          </View>
 
-        {/* Form */}
-        <View>
-          <Input
-            label="Full Name"
-            placeholder="John Doe"
-            value={values.name}
-            onChangeText={handleChange("name")}
-            keyboardType="default"
-            returnKeyType="next"
-            error={errors.name}
-          />
+          {/* Form */}
+          <View>
+            <Input
+              label="Full Name"
+              placeholder="John Doe"
+              value={values.name}
+              onChangeText={handleChange("name")}
+              keyboardType="default"
+              returnKeyType="next"
+              error={errors.name}
+            />
 
-          <Input
-            label="Email"
-            placeholder="john@example.com"
-            value={values.email}
-            onChangeText={handleChange("email")}
-            keyboardType="email-address"
-            returnKeyType="next"
-            error={errors.email}
-          />
+            <Input
+              label="Email"
+              placeholder="john@example.com"
+              value={values.email}
+              onChangeText={handleChange("email")}
+              keyboardType="email-address"
+              returnKeyType="next"
+              error={errors.email}
+            />
 
-          <Input
-            label="Password"
-            placeholder="Min. 8 characters"
-            value={values.password}
-            onChangeText={handleChange("password")}
-            secureEntry
-            returnKeyType="next"
-            error={errors.password}
-          />
+            <Input
+              label="Password"
+              placeholder="Min. 8 characters"
+              value={values.password}
+              onChangeText={handleChange("password")}
+              secureEntry
+              returnKeyType="next"
+              error={errors.password}
+            />
 
-          <Input
-            label="Confirm Password"
-            placeholder="Re-enter your password"
-            value={values.confirmPassword}
-            onChangeText={handleChange("confirmPassword")}
-            secureEntry
-            returnKeyType="done"
-            error={errors.confirmPassword}
-          />
-        </View>
+            <Input
+              label="Confirm Password"
+              placeholder="Re-enter your password"
+              value={values.confirmPassword}
+              onChangeText={handleChange("confirmPassword")}
+              secureEntry
+              returnKeyType="done"
+              error={errors.confirmPassword}
+            />
+          </View>
 
-        {/* Submit */}
-        <View className="mt-4">
-          <Button
-            label="Create Account"
-            onPress={handleSubmit}
-            loading={loading}
-          />
-        </View>
-      </ScrollView>
+          {/* Submit */}
+          <View className="mt-4">
+            <Button
+              label="Create Account"
+              onPress={handleSubmit}
+              loading={loading}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Screen>
   );
 }

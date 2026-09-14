@@ -1,6 +1,7 @@
 import AppText from "@/components/ui/AppText";
-import { colors, radius, spacing } from "@/theme";
+import { colors, shadows } from "@/theme";
 import { Recipe } from "@/types/recipe";
+import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { Pressable, View } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
@@ -23,69 +24,112 @@ export default function RecipeCard({ recipe, onPress }: RecipeCardProps) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
-      className="mb-4"
+      accessibilityRole="button"
+      accessibilityLabel={`${recipe.name}, ${recipe.difficulty} difficulty, ${recipe.cuisine} cuisine, ${totalTime} minutes, rated ${recipe.rating} stars`}
+      style={({ pressed }) => [
+        {
+          opacity: pressed ? 0.88 : 1,
+          transform: [{ scale: pressed ? 0.985 : 1 }],
+        },
+      ]}
     >
-      <View className="bg-surface rounded-2xl overflow-hidden">
+      <View
+        className="bg-surface rounded-2xl border border-surfaceAlt overflow-hidden"
+        style={shadows.card}
+      >
+        {/* Recipe Image with Difficulty Badge Overlay */}
+        <View
+          className="relative w-full bg-surfaceAlt"
+          style={{ height: scale(180) }}
+        >
+          <Image
+            source={{ uri: recipe.image }}
+            style={{ width: "100%", height: "100%" }}
+            contentFit="cover"
+            transition={300}
+          />
 
-        {/* Recipe image */}
-        <Image
-          source={{ uri: recipe.image }}
-          style={{ width: "100%", height: scale(180) }}
-          contentFit="cover"
-          transition={300} // fade-in when image loads
-        />
+          {/* Difficulty Badge (Top Right Overlay) */}
+          <View
+            className="absolute top-2 right-2 rounded-full px-2.5 py-0.5 border"
+            style={{
+              backgroundColor: "rgba(15, 15, 15, 0.78)",
+              borderColor: difficultyColor[recipe.difficulty],
+            }}
+          >
+            <AppText
+              variant="hint"
+              className="font-bold tracking-wider"
+              style={{
+                color: difficultyColor[recipe.difficulty],
+                fontSize: moderateScale(11),
+              }}
+            >
+              {recipe.difficulty.toUpperCase()}
+            </AppText>
+          </View>
+        </View>
 
-        {/* Card content */}
-        <View style={{ padding: spacing.md }}>
-
-          {/* Recipe name */}
+        {/* Card Body */}
+        <View className="p-4">
+          {/* Recipe Name — constrained to 2 lines so long titles never break layout */}
           <AppText
             variant="body"
-            style={{ fontWeight: "600", marginBottom: spacing.sm }}
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            className="font-bold text-textPrimary mb-1"
+            style={{
+              fontSize: moderateScale(16),
+              lineHeight: moderateScale(22),
+            }}
           >
             {recipe.name}
           </AppText>
 
-          {/* Metadata row 1 — cuisine + time */}
-          <View className="flex-row items-center gap-4 mb-1">
-            <AppText variant="hint">🌍 {recipe.cuisine}</AppText>
-            <AppText variant="hint">⏱ {totalTime} min</AppText>
-          </View>
-
-          {/* Metadata row 2 — rating + difficulty badge */}
-          <View className="flex-row items-center gap-4">
-            <AppText variant="hint">
-              ⭐ {recipe.rating.toFixed(1)}
-              <AppText variant="hint" style={{ color: colors.textSecondary }}>
-                {" "}({recipe.reviewCount})
-              </AppText>
-            </AppText>
-
-            {/* Difficulty pill */}
-            <View
-              style={{
-                backgroundColor: difficultyColor[recipe.difficulty] + "22", // 22 = ~13% opacity hex
-                borderColor: difficultyColor[recipe.difficulty],
-                borderWidth: 1,
-                borderRadius: radius.full,
-                paddingHorizontal: spacing.sm,
-                paddingVertical: 2,
-              }}
-            >
-              <AppText
-                variant="hint"
-                style={{
-                  color: difficultyColor[recipe.difficulty],
-                  fontSize: moderateScale(11),
-                  fontWeight: "600",
-                }}
-              >
-                {recipe.difficulty}
+          {/* Metadata Row — cuisine, total time, calories */}
+          <View className="flex-row items-center flex-wrap gap-3 mt-1">
+            <View className="flex-row items-center gap-1">
+              <Ionicons name="earth-outline" size={scale(12)} color={colors.textSecondary} />
+              <AppText variant="hint" style={{ fontSize: moderateScale(12) }}>
+                {recipe.cuisine}
               </AppText>
             </View>
+
+            <View className="flex-row items-center gap-1">
+              <Ionicons name="time-outline" size={scale(12)} color={colors.textSecondary} />
+              <AppText variant="hint" style={{ fontSize: moderateScale(12) }}>
+                {totalTime} min
+              </AppText>
+            </View>
+
+            {recipe.caloriesPerServing > 0 && (
+              <View className="flex-row items-center gap-0.5">
+                <Ionicons name="flame-outline" size={scale(12)} color={colors.primary} />
+                <AppText variant="hint" style={{ fontSize: moderateScale(12) }}>
+                  {recipe.caloriesPerServing} kcal
+                </AppText>
+              </View>
+            )}
           </View>
 
+          {/* Rating Row */}
+          <View className="flex-row items-center mt-2">
+            <Ionicons name="star" size={scale(13)} color={colors.primary} />
+            <AppText
+              variant="hint"
+              className="text-primary font-semibold ml-1"
+              style={{ fontSize: moderateScale(13) }}
+            >
+              {recipe.rating.toFixed(1)}
+            </AppText>
+            <AppText
+              variant="hint"
+              className="text-textSecondary ml-1"
+              style={{ fontSize: moderateScale(12) }}
+            >
+              ({recipe.reviewCount} reviews)
+            </AppText>
+          </View>
         </View>
       </View>
     </Pressable>

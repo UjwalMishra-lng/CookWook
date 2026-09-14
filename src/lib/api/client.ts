@@ -15,9 +15,7 @@ export const apiClient = axios.create({
   },
 });
 
-// ── Request Interceptor ──────────────────────────────────────────────────────
-// Runs before every request leaves the device.
-// Currently logs in dev. Auth token injection will go here later.
+// ── Request Interceptor 
 apiClient.interceptors.request.use(
   (config) => {
     if (__DEV__) {
@@ -33,10 +31,7 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ── Response Interceptor ─────────────────────────────────────────────────────
-// Runs after every response arrives.
-// Success path: passes data through untouched.
-// Error path: normalizes the error — repositories will use toApiError() on it.
+// ── Response Interceptor() on it.
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {

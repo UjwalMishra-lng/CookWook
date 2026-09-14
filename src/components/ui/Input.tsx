@@ -33,7 +33,7 @@ export default function Input({
         <TextInput
           className="flex-1 text-textPrimary"
           style={{ fontSize: fontSize.md }}
-          placeholderTextColor="#9A9A9A"
+          placeholderTextColor="#8C7A70"
           secureTextEntry={hidden}
           autoCapitalize="none"
           autoCorrect={false}

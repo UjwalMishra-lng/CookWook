@@ -1,6 +1,6 @@
 import { fontSize } from "@/theme";
 import { ReactNode } from "react";
-import { StyleProp, Text, TextStyle } from "react-native";
+import { StyleProp, Text, TextProps, TextStyle } from "react-native";
 
 type TextVariant =
   | "hero"    // large display, screen titles
@@ -17,7 +17,7 @@ type AppTextProps = {
   children: ReactNode;
   style?: StyleProp<TextStyle>; // accepts single object, array, false, null
   className?: string;           // NativeWind passthrough
-};
+} & Omit<TextProps, "style" | "className">;
 
 // Per-variant font size (moderateScale) — Tailwind can't compute these
 const variantFontSize: Record<TextVariant, number> = {
@@ -44,11 +44,13 @@ export default function AppText({
   children,
   style,
   className = "",
+  ...rest
 }: AppTextProps) {
   return (
     <Text
       className={`${variantClass[variant]} ${className}`}
       style={[{ fontSize: variantFontSize[variant] }, style]}
+      {...rest}
     >
       {children}
     </Text>
