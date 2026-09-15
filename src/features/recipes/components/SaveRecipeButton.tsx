@@ -1,11 +1,11 @@
+import { useSavedRecipesStore } from "@/features/recipes/stores/savedStore";
+import { analyticsService } from "@/services/analyticsService";
 import { colors, shadows } from "@/theme";
 import { Recipe } from "@/types/recipe";
+import { showRemovedRecipeToast, showSavedRecipeToast } from "@/utils/toast";
 import { Ionicons } from "@expo/vector-icons";
 import { GestureResponderEvent, Pressable, StyleProp, View, ViewStyle } from "react-native";
 import { scale } from "react-native-size-matters";
-import { useSavedRecipesStore } from "@/features/recipes/savedStore";
-import { analyticsService } from "@/services/analyticsService";
-import { showRemovedRecipeToast, showSavedRecipeToast } from "@/utils/toast";
 
 type Props = {
   recipe: Recipe;
@@ -55,11 +55,10 @@ export default function SaveRecipeButton({
         ]}
       >
         <View
-          className={`w-11 h-11 rounded-full items-center justify-center border ${
-            isSaved
+          className={`w-11 h-11 rounded-full items-center justify-center border ${isSaved
               ? "border-primary/50 bg-[#1C1C1E]/90"
               : "border-white/15 bg-[#1C1C1E]/80"
-          }`}
+            }`}
           style={shadows.card}
         >
           <Ionicons
@@ -88,11 +87,10 @@ export default function SaveRecipeButton({
       ]}
     >
       <View
-        className={`w-9 h-9 rounded-full items-center justify-center border ${
-          isSaved
+        className={`w-9 h-9 rounded-full items-center justify-center border ${isSaved
             ? "bg-black/75 border-primary/60"
             : "bg-black/60 border-white/20"
-        }`}
+          }`}
         style={shadows.card}
       >
         <Ionicons

@@ -1,10 +1,10 @@
 import AppText from "@/components/ui/AppText";
+import { useRecipeFilterStore } from "@/features/recipes/stores/store";
 import { colors } from "@/theme";
 import { MEAL_TYPES } from "@/types/recipe";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
-import { useRecipeFilterStore } from "@/features/recipes/store";
 
 type Props = {
   selectedMealType?: string | null;
@@ -59,11 +59,10 @@ export default function MealTypeFilter({
                   onSelectMealType(item.id);
                 }
               }}
-              className={`flex-row items-center px-3.5 py-2 rounded-full border ${
-                isSelected
+              className={`flex-row items-center px-3.5 py-2 rounded-full border ${isSelected
                   ? "bg-primary border-primary"
                   : "bg-surface border-surfaceAlt"
-              }`}
+                }`}
             >
               <Ionicons
                 name={item.icon as any}

@@ -1,10 +1,10 @@
 import AppText from "@/components/ui/AppText";
+import { useRecipeFilterStore } from "@/features/recipes/stores/store";
 import { colors } from "@/theme";
 import { RecipeSortOption } from "@/types/recipe";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
-import { useRecipeFilterStore } from "@/features/recipes/store";
 
 type Props = {
   selectedTag?: string | null;

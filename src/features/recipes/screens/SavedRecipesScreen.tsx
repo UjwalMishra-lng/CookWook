@@ -1,13 +1,13 @@
 import Screen from "@/components/layout/Screen";
 import AppText from "@/components/ui/AppText";
 import Button from "@/components/ui/Button";
+import RecipeCard from "@/features/recipes/components/RecipeCard";
+import { useSavedRecipesStore } from "@/features/recipes/stores/savedStore";
 import { colors, spacing } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { FlatList, View } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
-import RecipeCard from "@/features/recipes/components/RecipeCard";
-import { useSavedRecipesStore } from "@/features/recipes/savedStore";
 
 export default function SavedRecipesScreen() {
   const router = useRouter();
@@ -28,9 +28,8 @@ export default function SavedRecipesScreen() {
         <AppText variant="hint" className="text-textSecondary mt-0.5">
           {savedRecipes.length === 0
             ? "Your personal offline cookbook"
-            : `${savedRecipes.length} ${
-                savedRecipes.length === 1 ? "recipe" : "recipes"
-              } bookmarked`}
+            : `${savedRecipes.length} ${savedRecipes.length === 1 ? "recipe" : "recipes"
+            } bookmarked`}
         </AppText>
       </View>
 

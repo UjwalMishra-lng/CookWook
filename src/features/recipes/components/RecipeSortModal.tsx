@@ -1,4 +1,5 @@
 import AppText from "@/components/ui/AppText";
+import { useRecipeFilterStore } from "@/features/recipes/stores/store";
 import { colors } from "@/theme";
 import { RECIPE_SORT_OPTIONS, RecipeSortOption } from "@/types/recipe";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,7 +11,6 @@ import {
   View,
 } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
-import { useRecipeFilterStore } from "@/features/recipes/store";
 
 type Props = {
   visible: boolean;
@@ -80,17 +80,15 @@ export default function RecipeSortModal({
                         onSelectOption(option);
                         onClose();
                       }}
-                      className={`flex-row items-center justify-between p-3.5 rounded-2xl border ${
-                        isSelected
+                      className={`flex-row items-center justify-between p-3.5 rounded-2xl border ${isSelected
                           ? "bg-primary/15 border-primary"
                           : "bg-background/60 border-surfaceAlt"
-                      }`}
+                        }`}
                     >
                       <View className="flex-row items-center gap-3">
                         <View
-                          className={`w-9 h-9 rounded-xl items-center justify-center ${
-                            isSelected ? "bg-primary" : "bg-surfaceAlt"
-                          }`}
+                          className={`w-9 h-9 rounded-xl items-center justify-center ${isSelected ? "bg-primary" : "bg-surfaceAlt"
+                            }`}
                         >
                           <Ionicons
                             name={option.icon as any}

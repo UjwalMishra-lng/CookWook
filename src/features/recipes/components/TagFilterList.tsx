@@ -1,10 +1,10 @@
 import AppText from "@/components/ui/AppText";
+import { useRecipeTags } from "@/features/recipes/hooks/useRecipeTags";
+import { useRecipeFilterStore } from "@/features/recipes/stores/store";
 import { colors } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
-import { useRecipeTags } from "@/features/recipes/hooks/useRecipeTags";
-import { useRecipeFilterStore } from "@/features/recipes/store";
 
 type Props = {
   selectedTag?: string | null;
@@ -71,11 +71,10 @@ export default function TagFilterList({
               onPress={() => {
                 onSelectTag(isSelected ? null : tag);
               }}
-              className={`flex-row items-center px-3 py-1.5 rounded-full border ${
-                isSelected
+              className={`flex-row items-center px-3 py-1.5 rounded-full border ${isSelected
                   ? "bg-primary border-primary"
                   : "bg-surface border-surfaceAlt"
-              }`}
+                }`}
             >
               <Ionicons
                 name="pricetag-outline"

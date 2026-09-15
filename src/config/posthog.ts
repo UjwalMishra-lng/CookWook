@@ -1,11 +1,30 @@
 import { PostHogOptions } from "posthog-react-native";
 
-export const POSTHOG_API_KEY =
-  process.env.EXPO_PUBLIC_POSTHOG_API_KEY ||
-  "phc_nu2L5QMpYVgaAmHt77kaPch5Ua6gWEFkphXFkzDbWuyF";
+// ---------------------------------------------------------------------------
+// Read from .env — Expo exposes EXPO_PUBLIC_* vars to JS at build time.
+// If either is missing the app will throw early with a clear message rather
+// than silently using a hardcoded fallback (which would leak secrets into
+// source control).
+// ---------------------------------------------------------------------------
+const apiKey = process.env.EXPO_PUBLIC_POSTHOG_API_KEY;
+const host = process.env.EXPO_PUBLIC_POSTHOG_HOST;
 
-export const POSTHOG_HOST =
-  process.env.EXPO_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
+if (!apiKey) {
+  throw new Error(
+    "[PostHog] EXPO_PUBLIC_POSTHOG_API_KEY is not set.\n" +
+      "Add it to your .env file and restart the Metro bundler."
+  );
+}
+
+if (!host) {
+  throw new Error(
+    "[PostHog] EXPO_PUBLIC_POSTHOG_HOST is not set.\n" +
+      "Add it to your .env file and restart the Metro bundler."
+  );
+}
+
+export const POSTHOG_API_KEY: string = apiKey;
+export const POSTHOG_HOST: string = host;
 
 export const posthogOptions: PostHogOptions = {
   host: POSTHOG_HOST,

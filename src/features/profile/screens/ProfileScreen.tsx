@@ -2,7 +2,7 @@ import Screen from "@/components/layout/Screen";
 import AppText from "@/components/ui/AppText";
 import Button from "@/components/ui/Button";
 import { useOnboardingStore } from "@/features/onboarding/store";
-import { useSavedRecipesStore } from "@/features/recipes/savedStore";
+import { useSavedRecipesStore } from "@/features/recipes/stores/savedStore";
 import { analyticsService } from "@/services/analyticsService";
 import { colors } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";

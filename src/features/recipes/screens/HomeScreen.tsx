@@ -1,6 +1,17 @@
 import Screen from "@/components/layout/Screen";
 import AppText from "@/components/ui/AppText";
 import Button from "@/components/ui/Button";
+import ActiveFilterBar from "@/features/recipes/components/ActiveFilterBar";
+import HomeHeader from "@/features/recipes/components/HomeHeader";
+import MealTypeFilter from "@/features/recipes/components/MealTypeFilter";
+import RecipeCard from "@/features/recipes/components/RecipeCard";
+import RecipeCardSkeleton from "@/features/recipes/components/RecipeCardSkeleton";
+import RecipeSearchBar from "@/features/recipes/components/RecipeSearchBar";
+import RecipeSortModal from "@/features/recipes/components/RecipeSortModal";
+import TagFilterList from "@/features/recipes/components/TagFilterList";
+import { useRecipes } from "@/features/recipes/hooks/useRecipes";
+import { useRecipeSearch } from "@/features/recipes/hooks/useRecipeSearch";
+import { useRecipeFilterStore } from "@/features/recipes/stores/store";
 import { colors, spacing } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -12,17 +23,6 @@ import {
   View,
 } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
-import ActiveFilterBar from "@/features/recipes/components/ActiveFilterBar";
-import HomeHeader from "@/features/recipes/components/HomeHeader";
-import MealTypeFilter from "@/features/recipes/components/MealTypeFilter";
-import RecipeCard from "@/features/recipes/components/RecipeCard";
-import RecipeCardSkeleton from "@/features/recipes/components/RecipeCardSkeleton";
-import RecipeSearchBar from "@/features/recipes/components/RecipeSearchBar";
-import RecipeSortModal from "@/features/recipes/components/RecipeSortModal";
-import TagFilterList from "@/features/recipes/components/TagFilterList";
-import { useRecipes } from "@/features/recipes/hooks/useRecipes";
-import { useRecipeSearch } from "@/features/recipes/hooks/useRecipeSearch";
-import { useRecipeFilterStore } from "@/features/recipes/store";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -97,14 +97,14 @@ export default function HomeScreen() {
   const sectionTitle = isSearchActive
     ? `Results for "${debouncedQuery}"`
     : selectedTag && selectedMealType
-    ? `${selectedTag} · ${selectedMealType}`
-    : selectedTag
-    ? `${selectedTag} Recipes`
-    : selectedMealType
-    ? `${selectedMealType} Recipes`
-    : selectedSort.id !== "default"
-    ? `Recipes · ${selectedSort.label}`
-    : "Featured Recipes";
+      ? `${selectedTag} · ${selectedMealType}`
+      : selectedTag
+        ? `${selectedTag} Recipes`
+        : selectedMealType
+          ? `${selectedMealType} Recipes`
+          : selectedSort.id !== "default"
+            ? `Recipes · ${selectedSort.label}`
+            : "Featured Recipes";
 
   return (
     <Screen>
@@ -128,11 +128,10 @@ export default function HomeScreen() {
             activeOpacity={0.7}
             accessibilityRole="button"
             accessibilityLabel="Sort recipes"
-            className={`w-12 h-12 rounded-xl items-center justify-center border ${
-              selectedSort.id !== "default"
+            className={`w-12 h-12 rounded-xl items-center justify-center border ${selectedSort.id !== "default"
                 ? "bg-primary/20 border-primary"
                 : "bg-surface border-surfaceAlt"
-            }`}
+              }`}
           >
             <Ionicons
               name="options-outline"
@@ -242,8 +241,8 @@ export default function HomeScreen() {
                 {isSearchActive
                   ? `No matching recipes found for "${debouncedQuery}". Try another keyword, cuisine, or ingredient.`
                   : isAnyFilterActive
-                  ? "No recipes match the selected filters. Try changing or clearing filters."
-                  : "Check back later or pull down to refresh."}
+                    ? "No recipes match the selected filters. Try changing or clearing filters."
+                    : "Check back later or pull down to refresh."}
               </AppText>
               <View className="w-full max-w-[160px]">
                 <Button
@@ -251,8 +250,8 @@ export default function HomeScreen() {
                     isSearchActive
                       ? "Clear Search"
                       : isAnyFilterActive
-                      ? "Clear Filters"
-                      : "Refresh"
+                        ? "Clear Filters"
+                        : "Refresh"
                   }
                   variant="ghost"
                   loading={activeRefetching}
@@ -260,8 +259,8 @@ export default function HomeScreen() {
                     isSearchActive
                       ? handleClearSearch
                       : isAnyFilterActive
-                      ? handleClearAll
-                      : () => activeRefetch()
+                        ? handleClearAll
+                        : () => activeRefetch()
                   }
                 />
               </View>
