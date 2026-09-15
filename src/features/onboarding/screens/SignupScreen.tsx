@@ -1,17 +1,17 @@
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import AppText from "@/components/ui/AppText";
-import Screen from "@/components/layout/Screen";
 import {
   signupSchema,
   SignupFormValues,
 } from "@/features/onboarding/schemas/signupSchema";
 import { useOnboardingStore } from "@/features/onboarding/store";
 import { analyticsService } from "@/services/analyticsService";
-import { spacing } from "@/theme";
+import { colors, spacing } from "@/theme";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // FormErrors mirrors the form fields — each key holds an error string or undefined
 type FormErrors = Partial<Record<keyof SignupFormValues, string>>;
@@ -78,17 +78,18 @@ export default function SignupScreen() {
   };
 
   return (
-    <Screen>
+    <SafeAreaView style={styles.safe} edges={["top"]}>
       <KeyboardAvoidingView
-        className="flex-1"
+        style={styles.kav}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 24}
       >
         <ScrollView
           contentContainerStyle={{
             paddingHorizontal: spacing.lg,
             paddingTop: spacing.md,
-            paddingBottom: spacing.xxl,
+            // Extra bottom padding so "Confirm Password" + button scroll fully above the keyboard
+            paddingBottom: spacing.xxl * 2,
             flexGrow: 1,
           }}
           keyboardShouldPersistTaps="handled"
@@ -155,6 +156,18 @@ export default function SignupScreen() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </Screen>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  kav: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+});
+
