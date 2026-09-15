@@ -6,6 +6,8 @@ import { Image } from "expo-image";
 import { Pressable, View } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
 
+import SaveRecipeButton from "@/features/recipes/components/SaveRecipeButton";
+
 type RecipeCardProps = {
   recipe: Recipe;
   onPress?: () => void;
@@ -37,7 +39,7 @@ export default function RecipeCard({ recipe, onPress }: RecipeCardProps) {
         className="bg-surface rounded-2xl border border-surfaceAlt overflow-hidden"
         style={shadows.card}
       >
-        {/* Recipe Image with Difficulty Badge Overlay */}
+        {/* Recipe Image with Difficulty Badge Overlay & Save Button */}
         <View
           className="relative w-full bg-surfaceAlt"
           style={{ height: scale(180) }}
@@ -48,6 +50,11 @@ export default function RecipeCard({ recipe, onPress }: RecipeCardProps) {
             contentFit="cover"
             transition={300}
           />
+
+          {/* Save / Bookmark Button (Top Left Overlay) */}
+          <View className="absolute top-2.5 left-2.5 z-10">
+            <SaveRecipeButton recipe={recipe} variant="card" />
+          </View>
 
           {/* Difficulty Badge (Top Right Overlay) */}
           <View

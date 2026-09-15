@@ -8,18 +8,80 @@ import { Recipe, RecipesResponse } from "@/types/recipe";
 export type FetchRecipesParams = {
   limit?: number;
   skip?: number;
+  sortBy?: string;
+  order?: "asc" | "desc";
 };
 
 export const recipeRepository = {
-  // Fetch paginated list of recipes
+  // Fetch paginated list of recipes with optional sorting
   fetchRecipes: async ({
     limit = 20,
     skip = 0,
+    sortBy,
+    order,
   }: FetchRecipesParams = {}): Promise<RecipesResponse> => {
     try {
       const response = await apiClient.get<RecipesResponse>("/recipes", {
-        params: { limit, skip },
+        params: {
+          limit,
+          skip,
+          ...(sortBy ? { sortBy, order: order ?? "asc" } : {}),
+        },
       });
+      return response.data;
+    } catch (error) {
+      throw toApiError(error);
+    }
+  },
+
+  // Fetch all available recipe tags
+  fetchRecipeTags: async (): Promise<string[]> => {
+    try {
+      const response = await apiClient.get<string[]>("/recipes/tags");
+      return response.data;
+    } catch (error) {
+      throw toApiError(error);
+    }
+  },
+
+  // Fetch recipes by tag with optional sorting
+  fetchRecipesByTag: async (
+    tag: string,
+    { limit = 20, skip = 0, sortBy, order }: FetchRecipesParams = {}
+  ): Promise<RecipesResponse> => {
+    try {
+      const response = await apiClient.get<RecipesResponse>(
+        `/recipes/tag/${encodeURIComponent(tag)}`,
+        {
+          params: {
+            limit,
+            skip,
+            ...(sortBy ? { sortBy, order: order ?? "asc" } : {}),
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw toApiError(error);
+    }
+  },
+
+  // Fetch recipes by meal-type with optional sorting
+  fetchRecipesByMealType: async (
+    mealType: string,
+    { limit = 20, skip = 0, sortBy, order }: FetchRecipesParams = {}
+  ): Promise<RecipesResponse> => {
+    try {
+      const response = await apiClient.get<RecipesResponse>(
+        `/recipes/meal-type/${encodeURIComponent(mealType)}`,
+        {
+          params: {
+            limit,
+            skip,
+            ...(sortBy ? { sortBy, order: order ?? "asc" } : {}),
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw toApiError(error);
@@ -36,11 +98,19 @@ export const recipeRepository = {
     }
   },
 
-  // Search recipes by name
-  searchRecipes: async (query: string): Promise<RecipesResponse> => {
+  // Search recipes by name with optional sorting
+  searchRecipes: async (
+    query: string,
+    { limit = 20, skip = 0, sortBy, order }: FetchRecipesParams = {}
+  ): Promise<RecipesResponse> => {
     try {
       const response = await apiClient.get<RecipesResponse>("/recipes/search", {
-        params: { q: query },
+        params: {
+          q: query,
+          limit,
+          skip,
+          ...(sortBy ? { sortBy, order: order ?? "asc" } : {}),
+        },
       });
       return response.data;
     } catch (error) {

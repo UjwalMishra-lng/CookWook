@@ -1,14 +1,15 @@
 import Screen from "@/components/layout/Screen";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, View } from "react-native";
-import RecipeDetailBackButton from "../components/RecipeDetailBackButton";
-import RecipeDetailError from "../components/RecipeDetailError";
-import RecipeDetailHero from "../components/RecipeDetailHero";
-import RecipeDetailSkeleton from "../components/RecipeDetailSkeleton";
-import RecipeIngredients from "../components/RecipeIngredients";
-import RecipeInstructions from "../components/RecipeInstructions";
-import RecipeQuickStats from "../components/RecipeQuickStats";
-import { useRecipe } from "../hooks/useRecipe";
+import RecipeDetailBackButton from "@/features/recipes/components/RecipeDetailBackButton";
+import RecipeDetailError from "@/features/recipes/components/RecipeDetailError";
+import RecipeDetailHero from "@/features/recipes/components/RecipeDetailHero";
+import RecipeDetailSkeleton from "@/features/recipes/components/RecipeDetailSkeleton";
+import RecipeIngredients from "@/features/recipes/components/RecipeIngredients";
+import RecipeInstructions from "@/features/recipes/components/RecipeInstructions";
+import RecipeQuickStats from "@/features/recipes/components/RecipeQuickStats";
+import SaveRecipeButton from "@/features/recipes/components/SaveRecipeButton";
+import { useRecipe } from "@/features/recipes/hooks/useRecipe";
 
 export default function RecipeDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -46,6 +47,7 @@ export default function RecipeDetailScreen() {
   return (
     <Screen>
       <RecipeDetailBackButton onBack={() => router.back()} />
+      <SaveRecipeButton recipe={recipe} variant="detail" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}

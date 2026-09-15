@@ -1,9 +1,9 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Fuse, { IFuseOptions } from "fuse.js";
 import { useMemo } from "react";
-import { recipeRepository } from "../repository/recipeRepository";
-import { recipeKeys } from "./recipeKeys";
-import { Recipe, RecipesResponse } from "@/types/recipe";
+import { recipeRepository } from "@/features/recipes/repository/recipeRepository";
+import { recipeKeys } from "@/features/recipes/hooks/recipeKeys";
+import { Recipe, RecipesResponse, SortByField, SortOrder } from "@/types/recipe";
 
 // Fuse.js weighted options:
 // - Title (name) has the highest weightage (0.50)
@@ -25,25 +25,33 @@ const fuseOptions: IFuseOptions<Recipe> = {
   shouldSort: true,
 };
 
-export function useRecipeSearch(query: string) {
+export type SearchSortOptions = {
+  sortBy?: SortByField;
+  order?: SortOrder;
+};
+
+export function useRecipeSearch(query: string, sortOptions: SearchSortOptions = {}) {
   const trimmedQuery = query.trim();
   const queryClient = useQueryClient();
+  const { sortBy, order } = sortOptions;
 
   const searchQuery = useQuery({
-    queryKey: recipeKeys.search(trimmedQuery),
+    queryKey: recipeKeys.search(trimmedQuery, { sortBy, order }),
     queryFn: async () => {
-      
-      const apiResult = await recipeRepository.searchRecipes(trimmedQuery);
+      const apiResult = await recipeRepository.searchRecipes(trimmedQuery, {
+        sortBy,
+        order,
+      });
       let candidates = apiResult.recipes;
 
       // Fallback if API returned 0 results (e.g. typos like "Margharita" or ingredient search):
       // Check queryClient cache or fetch full dataset to fuzzy search locally
       if (candidates.length === 0) {
-        const cachedList = queryClient.getQueryData<RecipesResponse>(
-          recipeKeys.lists()
-        ) || queryClient.getQueriesData<RecipesResponse>({
-          queryKey: recipeKeys.lists(),
-        })[0]?.[1];
+        const cachedList =
+          queryClient.getQueryData<RecipesResponse>(recipeKeys.lists()) ||
+          queryClient.getQueriesData<RecipesResponse>({
+            queryKey: recipeKeys.lists(),
+          })[0]?.[1];
 
         if (cachedList && cachedList.recipes.length > 0) {
           candidates = cachedList.recipes;
@@ -54,7 +62,25 @@ export function useRecipeSearch(query: string) {
         }
       }
 
-      // 3. Apply Fuse.js weighted scoring and ranking
+      // If a specific sort field is requested, sort candidates
+      if (sortBy) {
+        const sortedCandidates = [...candidates].sort((a, b) => {
+          const valA = a[sortBy];
+          const valB = b[sortBy];
+          if (typeof valA === "string" && typeof valB === "string") {
+            return order === "desc"
+              ? valB.localeCompare(valA)
+              : valA.localeCompare(valB);
+          }
+          if (typeof valA === "number" && typeof valB === "number") {
+            return order === "desc" ? valB - valA : valA - valB;
+          }
+          return 0;
+        });
+        return sortedCandidates;
+      }
+
+      // Apply Fuse.js weighted scoring and ranking when default sorting is used
       const fuse = new Fuse(candidates, fuseOptions);
       const searchResults = fuse.search(trimmedQuery);
 

@@ -34,9 +34,13 @@ export default function RecipeDetailHero({ recipe }: Props) {
       {/* Header Info */}
       <View className="px-6 pt-4">
         {/* Category & Tags Row */}
-        <View className="flex-row items-center flex-wrap gap-2 mb-2">
+        <View className="flex-row items-center flex-wrap gap-2 mb-1">
           <View className="bg-surfaceAlt px-2.5 py-1 rounded-md flex-row items-center gap-1">
-            <Ionicons name="earth-outline" size={scale(12)} color={colors.textPrimary} />
+            <Ionicons
+              name="earth-outline"
+              size={scale(12)}
+              color={colors.textPrimary}
+            />
             <AppText
               variant="hint"
               style={{ fontSize: moderateScale(11) }}
@@ -79,16 +83,20 @@ export default function RecipeDetailHero({ recipe }: Props) {
           </View>
         </View>
 
-        {/* Recipe Title */}
-        <AppText
-          variant="hero"
-          className="mb-1 leading-8"
-        >
-          {recipe.name}
-        </AppText>
+        <View className="my-3">
+          <AppText
+            className="font-bold text-textPrimary"
+            style={{
+              fontSize: moderateScale(26),
+              lineHeight: moderateScale(34),
+            }}
+          >
+            {recipe.name}
+          </AppText>
+        </View>
 
         {/* Rating & Reviews */}
-        <View className="flex-row items-center mb-2">
+        <View className="flex-row items-center mb-1">
           <Ionicons name="star" size={scale(14)} color={colors.primary} />
           <AppText
             variant="hint"

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { recipeRepository } from "../repository/recipeRepository";
-import { recipeKeys } from "./recipeKeys";
+import { recipeRepository } from "@/features/recipes/repository/recipeRepository";
+import { recipeKeys } from "@/features/recipes/hooks/recipeKeys";
 
 export function useRecipe(id: number) {
   return useQuery({

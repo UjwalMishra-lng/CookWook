@@ -61,14 +61,29 @@ export default function RecipeDetailSkeleton() {
           style={{ height: scale(20) }}
         />
 
-        {/* Instruction boxes placeholder */}
-        {[1, 2, 3].map((i) => (
-          <View
-            key={i}
-            className="w-full bg-surface rounded-xl border border-surfaceAlt mb-2"
-            style={{ height: scale(60) }}
-          />
-        ))}
+        {/* Instruction single card placeholder */}
+        <View className="w-full bg-surface/90 rounded-2xl border border-white/10 p-5">
+          {[1, 2, 3].map((i) => (
+            <View
+              key={i}
+              className={`flex-row items-start ${
+                i < 3 ? "border-b border-surfaceAlt/60 pb-4 mb-4" : ""
+              }`}
+            >
+              <View className="w-6 h-6 rounded-full bg-surfaceAlt mr-3.5 mt-0.5" />
+              <View className="flex-1">
+                <View
+                  className="w-full bg-surfaceAlt rounded mb-1.5"
+                  style={{ height: scale(14) }}
+                />
+                <View
+                  className="w-4/5 bg-surfaceAlt rounded"
+                  style={{ height: scale(14) }}
+                />
+              </View>
+            </View>
+          ))}
+        </View>
       </View>
     </ScrollView>
   );

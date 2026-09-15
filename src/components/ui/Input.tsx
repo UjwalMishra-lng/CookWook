@@ -1,7 +1,7 @@
 import { fontSize, spacing } from "@/theme";
 import { useState } from "react";
 import { TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
-import AppText from "./AppText";
+import AppText from "@/components/ui/AppText";
 
 type InputProps = {
   label: string;
