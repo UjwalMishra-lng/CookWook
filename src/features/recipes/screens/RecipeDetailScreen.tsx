@@ -10,13 +10,12 @@ import RecipeInstructions from "@/features/recipes/components/RecipeInstructions
 import RecipeQuickStats from "@/features/recipes/components/RecipeQuickStats";
 import SaveRecipeButton from "@/features/recipes/components/SaveRecipeButton";
 import { useRecipe } from "@/features/recipes/hooks/useRecipe";
-import { usePostHog } from "posthog-react-native";
+import { analyticsService } from "@/services/analyticsService";
 import { useEffect } from "react";
 
 export default function RecipeDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const posthog = usePostHog();
   const recipeId = Number(id);
 
   const { data: recipe, isLoading, isError, error, refetch, isRefetching } =
@@ -24,19 +23,9 @@ export default function RecipeDetailScreen() {
 
   useEffect(() => {
     if (recipe) {
-      posthog?.capture("recipe_viewed", {
-        recipe_id: recipe.id,
-        recipe_name: recipe.name,
-        cuisine: recipe.cuisine,
-        difficulty: recipe.difficulty,
-        rating: recipe.rating,
-      });
-      posthog?.logger.info("recipe viewed", {
-        recipe_id: recipe.id,
-        recipe_name: recipe.name,
-      });
+      analyticsService.trackRecipeViewed(recipe);
     }
-  }, [recipe, posthog]);
+  }, [recipe]);
 
   // Loading State
   if (isLoading) {

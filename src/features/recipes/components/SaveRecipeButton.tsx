@@ -4,8 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { GestureResponderEvent, Pressable, StyleProp, View, ViewStyle } from "react-native";
 import { scale } from "react-native-size-matters";
 import { useSavedRecipesStore } from "@/features/recipes/savedStore";
+import { analyticsService } from "@/services/analyticsService";
 import { showRemovedRecipeToast, showSavedRecipeToast } from "@/utils/toast";
-import { usePostHog } from "posthog-react-native";
 
 type Props = {
   recipe: Recipe;
@@ -18,7 +18,6 @@ export default function SaveRecipeButton({
   variant = "card",
   style,
 }: Props) {
-  const posthog = usePostHog();
   const isSaved = useSavedRecipesStore((state) =>
     state.savedRecipes.some((r) => r.id === recipe.id)
   );
@@ -31,27 +30,11 @@ export default function SaveRecipeButton({
     if (isSaved) {
       toggleSaveRecipe(recipe);
       showRemovedRecipeToast("Removed");
-      posthog?.capture("recipe_unsaved", {
-        recipe_id: recipe.id,
-        recipe_name: recipe.name,
-        cuisine: recipe.cuisine,
-      });
-      posthog?.logger.info("recipe unsaved", {
-        recipe_id: recipe.id,
-        recipe_name: recipe.name,
-      });
+      analyticsService.trackRecipeUnsaved(recipe);
     } else {
       toggleSaveRecipe(recipe);
       showSavedRecipeToast("Saved");
-      posthog?.capture("recipe_saved", {
-        recipe_id: recipe.id,
-        recipe_name: recipe.name,
-        cuisine: recipe.cuisine,
-      });
-      posthog?.logger.info("recipe saved", {
-        recipe_id: recipe.id,
-        recipe_name: recipe.name,
-      });
+      analyticsService.trackRecipeSaved(recipe);
     }
   };
 

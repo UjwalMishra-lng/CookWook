@@ -1,7 +1,7 @@
 import "../../global.css";
-import { POSTHOG_API_KEY, posthogOptions } from "@/config/posthog";
 import { queryClient } from "@/config/queryClient";
 import { toastConfig } from "@/config/toastConfig";
+import { posthogClient } from "@/services/analyticsService";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { Stack } from "expo-router";
@@ -18,7 +18,7 @@ cssInterop(Image, { className: "style" });
 
 export default function RootLayout() {
   return (
-    <PostHogProvider apiKey={POSTHOG_API_KEY} options={posthogOptions}>
+    <PostHogProvider client={posthogClient}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <Stack screenOptions={{ headerShown: false }} />

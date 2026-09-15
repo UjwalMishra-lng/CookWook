@@ -7,9 +7,9 @@ import {
   SignupFormValues,
 } from "@/features/onboarding/schemas/signupSchema";
 import { useOnboardingStore } from "@/features/onboarding/store";
+import { analyticsService } from "@/services/analyticsService";
 import { spacing } from "@/theme";
 import { useRouter } from "expo-router";
-import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 
@@ -18,7 +18,6 @@ type FormErrors = Partial<Record<keyof SignupFormValues, string>>;
 
 export default function SignupScreen() {
   const router = useRouter();
-  const posthog = usePostHog();
   const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding);
   const [values, setValues] = useState<SignupFormValues>({
     name: "",
@@ -68,16 +67,9 @@ export default function SignupScreen() {
       email: result.data.email,
     });
 
-    // Send event and structured log to PostHog
-    posthog?.identify(result.data.email, {
+    // Track signup event and structured log via analytics service
+    analyticsService.trackSignup({
       name: result.data.name,
-      email: result.data.email,
-    });
-    posthog?.capture("user_signup", {
-      name: result.data.name,
-      email: result.data.email,
-    });
-    posthog?.logger.info("user completed signup", {
       email: result.data.email,
     });
 

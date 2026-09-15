@@ -15,9 +15,9 @@ type RecipeCardProps = {
 
 // Difficulty badge color — visual signal at a glance
 const difficultyColor: Record<Recipe["difficulty"], string> = {
-  Easy:   colors.success,
+  Easy: colors.success,
   Medium: colors.primary,
-  Hard:   colors.error,
+  Hard: colors.error,
 };
 
 export default function RecipeCard({ recipe, onPress }: RecipeCardProps) {

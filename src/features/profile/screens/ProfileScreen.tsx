@@ -3,16 +3,15 @@ import AppText from "@/components/ui/AppText";
 import Button from "@/components/ui/Button";
 import { useOnboardingStore } from "@/features/onboarding/store";
 import { useSavedRecipesStore } from "@/features/recipes/savedStore";
+import { analyticsService } from "@/services/analyticsService";
 import { colors } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { usePostHog } from "posthog-react-native";
 import { View } from "react-native";
 import { scale } from "react-native-size-matters";
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const posthog = usePostHog();
   const user = useOnboardingStore((s) => s.user);
   const reset = useOnboardingStore((s) => s.reset);
   const savedRecipes = useSavedRecipesStore((s) => s.savedRecipes);
@@ -20,10 +19,7 @@ export default function ProfileScreen() {
   const totalSaved = savedRecipes.length;
 
   const handleLogout = async () => {
-    posthog?.capture("user_logout");
-    posthog?.logger.info("user logged out", { email: user?.email });
-    posthog?.reset();
-
+    analyticsService.trackLogout(user?.email);
     await reset();
     router.replace("/signup");
   };
