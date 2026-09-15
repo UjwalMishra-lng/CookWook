@@ -1,6 +1,6 @@
 import AppText from "@/components/ui/AppText";
 import { shadows } from "@/theme";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { moderateScale } from "react-native-size-matters";
 
 type Props = {
@@ -35,10 +35,14 @@ export default function RecipeInstructions({ instructions }: Props) {
               }`}
             >
               {/* Round orange badge with centered white number */}
-              <View className="w-6 h-6 rounded-full bg-primary items-center justify-center mr-3.5 mt-0.5">
-                <AppText className="text-white font-bold text-xs">
+              <View className="w-6 h-6 rounded-full bg-primary items-center justify-center mr-3.5 mt-0.5 shrink-0">
+                <Text
+                  allowFontScaling={false}
+                  className="text-white font-bold text-center text-[11px] ios:top-[0.5px]"
+                  style={{ includeFontPadding: false, textAlignVertical: "center" }}
+                >
                   {index + 1}
-                </AppText>
+                </Text>
               </View>
 
               {/* Instruction Text */}

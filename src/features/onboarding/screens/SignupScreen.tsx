@@ -9,6 +9,7 @@ import {
 import { useOnboardingStore } from "@/features/onboarding/store";
 import { spacing } from "@/theme";
 import { useRouter } from "expo-router";
+import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 
@@ -17,6 +18,7 @@ type FormErrors = Partial<Record<keyof SignupFormValues, string>>;
 
 export default function SignupScreen() {
   const router = useRouter();
+  const posthog = usePostHog();
   const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding);
   const [values, setValues] = useState<SignupFormValues>({
     name: "",
@@ -65,6 +67,20 @@ export default function SignupScreen() {
       name: result.data.name,
       email: result.data.email,
     });
+
+    // Send event and structured log to PostHog
+    posthog?.identify(result.data.email, {
+      name: result.data.name,
+      email: result.data.email,
+    });
+    posthog?.capture("user_signup", {
+      name: result.data.name,
+      email: result.data.email,
+    });
+    posthog?.logger.info("user completed signup", {
+      email: result.data.email,
+    });
+
     // replace() so the user can't press back to get to the signup screen
     router.replace("/(root)/(tabs)");
   };
