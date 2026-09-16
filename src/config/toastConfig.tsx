@@ -62,4 +62,33 @@ export const toastConfig: ToastConfig = {
       </View>
     </View>
   ),
+
+  error: ({ text1 }) => (
+    <View className="w-full items-center justify-center">
+      <View
+        className="flex-row items-center bg-[#7F1D1D] px-4 py-2 rounded-full border border-[#FF453A]/40"
+        style={{
+          alignSelf: "center",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.35,
+          shadowRadius: 8,
+          elevation: 8,
+        }}
+      >
+        <Ionicons
+          name="alert-circle"
+          size={scale(16)}
+          color="#FF453A"
+          style={{ marginRight: scale(6) }}
+        />
+        <AppText
+          className="text-[#FFF8F4] font-medium"
+          style={{ fontSize: moderateScale(13) }}
+        >
+          {text1 || "Something went wrong"}
+        </AppText>
+      </View>
+    </View>
+  ),
 };

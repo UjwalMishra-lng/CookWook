@@ -2,6 +2,7 @@ import "../../global.css";
 import { queryClient } from "@/config/queryClient";
 import { toastConfig } from "@/config/toastConfig";
 import { posthogClient } from "@/services/analyticsService";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { Stack } from "expo-router";
@@ -21,7 +22,9 @@ export default function RootLayout() {
     <PostHogProvider client={posthogClient}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <Stack screenOptions={{ headerShown: false }} />
+          <ErrorBoundary>
+            <Stack screenOptions={{ headerShown: false }} />
+          </ErrorBoundary>
           <Toast config={toastConfig} />
         </QueryClientProvider>
       </SafeAreaProvider>

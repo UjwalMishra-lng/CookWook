@@ -10,5 +10,5 @@ export type OnboardingUser = {
 // The full shape of onboarding state
 export type OnboardingState = {
   status: OnboardingStatus;
-  user?: OnboardingUser; // optional — doesn't exist when status is "NEW"
+  user?: OnboardingUser;
 };

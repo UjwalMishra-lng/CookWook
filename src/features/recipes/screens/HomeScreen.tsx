@@ -1,6 +1,7 @@
 import Screen from "@/components/layout/Screen";
 import AppText from "@/components/ui/AppText";
 import Button from "@/components/ui/Button";
+import ErrorState from "@/components/ui/ErrorState";
 import ActiveFilterBar from "@/features/recipes/components/ActiveFilterBar";
 import HomeHeader from "@/features/recipes/components/HomeHeader";
 import MealTypeFilter from "@/features/recipes/components/MealTypeFilter";
@@ -197,36 +198,12 @@ export default function HomeScreen() {
               <RecipeCardSkeleton />
             </View>
           ) : activeError ? (
-            <View className="bg-surface rounded-2xl border border-surfaceAlt p-8 items-center mt-4">
-              <View className="mb-2">
-                <Ionicons
-                  name="alert-circle-outline"
-                  size={scale(44)}
-                  color={colors.error}
-                />
-              </View>
-              <AppText variant="title" className="text-center mb-1">
-                {isSearchActive
-                  ? "Failed to search recipes"
-                  : "Unable to load recipes"}
-              </AppText>
-              <AppText
-                variant="hint"
-                className="text-center mb-6"
-                style={{ lineHeight: moderateScale(20) }}
-              >
-                {activeErrorObj instanceof Error
-                  ? activeErrorObj.message
-                  : "We couldn't connect to the recipe service. Please check your connection."}
-              </AppText>
-              <View className="w-full max-w-[200px]">
-                <Button
-                  label="Try Again"
-                  loading={activeRefetching}
-                  onPress={() => activeRefetch()}
-                />
-              </View>
-            </View>
+            <ErrorState
+              error={activeErrorObj}
+              title={isSearchActive ? "Failed to search recipes" : "Unable to load recipes"}
+              onRetry={() => activeRefetch()}
+              retryLoading={activeRefetching}
+            />
           ) : (
             <View className="bg-surface rounded-2xl border border-surfaceAlt p-8 items-center mt-4">
               <View className="mb-2">
