@@ -1,29 +1,12 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import Fuse, { IFuseOptions } from "fuse.js";
 import { useMemo } from "react";
 import { recipeRepository } from "@/features/recipes/repository/recipeRepository";
 import { recipeKeys } from "@/features/recipes/hooks/recipeKeys";
-import { Recipe, RecipesResponse, SortByField, SortOrder } from "@/types/recipe";
-
-// Fuse.js weighted options:
-// - Title (name) has the highest weightage (0.50)
-// - Cuisine has second highest weightage (0.20)
-// - Tags has third (0.15)
-// - Ingredients (0.10)
-// - Instructions (0.05)
-const fuseOptions: IFuseOptions<Recipe> = {
-  keys: [
-    { name: "name", weight: 0.5 },
-    { name: "cuisine", weight: 0.2 },
-    { name: "tags", weight: 0.15 },
-    { name: "ingredients", weight: 0.1 },
-    { name: "instructions", weight: 0.05 },
-  ],
-  threshold: 0.4, // Matches typos and partial words cleanly
-  ignoreLocation: true,
-  includeScore: true,
-  shouldSort: true,
-};
+import {
+  searchRecipesWithFuse,
+  sortRecipeList,
+} from "@/features/recipes/services/fuseSearchService";
+import { RecipesResponse, SortByField, SortOrder } from "@/types/recipe";
 
 export type SearchSortOptions = {
   sortBy?: SortByField;
@@ -64,28 +47,14 @@ export function useRecipeSearch(query: string, sortOptions: SearchSortOptions = 
 
       // If a specific sort field is requested, sort candidates
       if (sortBy) {
-        const sortedCandidates = [...candidates].sort((a, b) => {
-          const valA = a[sortBy];
-          const valB = b[sortBy];
-          if (typeof valA === "string" && typeof valB === "string") {
-            return order === "desc"
-              ? valB.localeCompare(valA)
-              : valA.localeCompare(valB);
-          }
-          if (typeof valA === "number" && typeof valB === "number") {
-            return order === "desc" ? valB - valA : valA - valB;
-          }
-          return 0;
-        });
-        return sortedCandidates;
+        return sortRecipeList(candidates, sortBy, order);
       }
 
       // Apply Fuse.js weighted scoring and ranking when default sorting is used
-      const fuse = new Fuse(candidates, fuseOptions);
-      const searchResults = fuse.search(trimmedQuery);
+      const searchResults = searchRecipesWithFuse(candidates, trimmedQuery);
 
       if (searchResults.length > 0) {
-        return searchResults.map((result) => result.item);
+        return searchResults;
       }
 
       // If fuse found nothing from the candidates, return the direct API results as fallback

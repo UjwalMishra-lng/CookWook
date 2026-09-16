@@ -166,6 +166,8 @@ export default function HomeScreen() {
         data={activeLoading ? [] : activeRecipes}
         keyExtractor={(item) => String(item.id)}
         showsVerticalScrollIndicator={false}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           paddingHorizontal: spacing.lg,
           paddingTop: spacing.xs,

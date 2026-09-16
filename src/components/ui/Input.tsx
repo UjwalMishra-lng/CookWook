@@ -1,4 +1,4 @@
-import { fontSize, spacing } from "@/theme";
+import { fontSize } from "@/theme";
 import { useState } from "react";
 import { TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
 import AppText from "@/components/ui/AppText";

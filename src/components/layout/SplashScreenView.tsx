@@ -2,7 +2,7 @@ import AppText from "@/components/ui/AppText";
 import { colors } from "@/theme";
 import { Image } from "expo-image";
 import { ActivityIndicator, View } from "react-native";
-import { moderateScale, scale } from "react-native-size-matters";
+import { moderateScale } from "react-native-size-matters";
 
 export default function SplashScreenView() {
   return (

@@ -60,6 +60,7 @@ export default function ActiveFilterBar({
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           gap: scale(8),
           alignItems: "center",

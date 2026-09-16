@@ -33,6 +33,7 @@ export default function MealTypeFilter({
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           paddingHorizontal: scale(24),
           gap: scale(8),

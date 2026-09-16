@@ -1,10 +1,13 @@
 import Screen from "@/components/layout/Screen";
 import AppText from "@/components/ui/AppText";
 import Button from "@/components/ui/Button";
+import { queryClient } from "@/config/queryClient";
 import { useOnboardingStore } from "@/features/onboarding/store";
+import { useRecipeFilterStore } from "@/features/recipes/stores/store";
 import { useSavedRecipesStore } from "@/features/recipes/stores/savedStore";
 import { analyticsService } from "@/services/analyticsService";
 import { colors } from "@/theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
@@ -20,7 +23,19 @@ export default function ProfileScreen() {
 
   const handleLogout = async () => {
     analyticsService.trackLogout(user?.email);
+
+    // 1. Fully wipe all keys in AsyncStorage
+    await AsyncStorage.clear();
+
+    // 2. Reset onboarding, saved recipes, and active filters in memory
     await reset();
+    useSavedRecipesStore.getState().clearAllSaved();
+    useRecipeFilterStore.getState().resetFilters();
+
+    // 3. Clear server query cache
+    queryClient.clear();
+
+    // 4. Navigate back to onboarding/signup
     router.replace("/signup");
   };
 

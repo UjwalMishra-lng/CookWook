@@ -31,6 +31,7 @@ export default function TagFilterList({
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             paddingHorizontal: scale(24),
             gap: scale(8),
@@ -39,7 +40,7 @@ export default function TagFilterList({
           {[1, 2, 3, 4, 5].map((key) => (
             <View
               key={key}
-              className="h-8 w-20 rounded-full bg-surfaceAlt animate-pulse"
+              className="h-8 w-20 rounded-full bg-surfaceAlt opacity-60"
             />
           ))}
         </ScrollView>
@@ -56,6 +57,7 @@ export default function TagFilterList({
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           paddingHorizontal: scale(24),
           gap: scale(8),

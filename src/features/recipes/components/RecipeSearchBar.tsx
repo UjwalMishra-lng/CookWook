@@ -1,6 +1,6 @@
 import { colors } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
-import { ActivityIndicator, Pressable, TextInput, View } from "react-native";
+import { ActivityIndicator, Keyboard, Pressable, TextInput, View } from "react-native";
 import { scale } from "react-native-size-matters";
 
 type Props = {
@@ -36,6 +36,7 @@ export default function RecipeSearchBar({
         autoCorrect={false}
         returnKeyType="search"
         clearButtonMode="never"
+        onSubmitEditing={Keyboard.dismiss}
       />
 
       {isLoading ? (

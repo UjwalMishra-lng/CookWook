@@ -3,7 +3,7 @@ import Button from "@/components/ui/Button";
 import { colors } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, View } from "react-native";
-import { moderateScale, scale } from "react-native-size-matters";
+import { scale } from "react-native-size-matters";
 
 type Props = {
   message?: string;

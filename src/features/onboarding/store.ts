@@ -32,8 +32,12 @@ export const useOnboardingStore = create<OnboardingStore>()(
 
       // Clears both Zustand memory AND AsyncStorage — full logout
       reset: async () => {
-        await AsyncStorage.removeItem("onboarding-storage");
-        set({ ...initialState });
+        try {
+          await AsyncStorage.clear();
+        } catch {
+          await AsyncStorage.removeItem("onboarding-storage");
+        }
+        set({ ...initialState, _hasHydrated: true });
       },
     }),
     {
